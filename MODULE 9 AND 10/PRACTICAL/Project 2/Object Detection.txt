@@ -1,0 +1,74 @@
+
+# Import libraries
+import cv2
+import time
+import imutils
+
+# Define the change in camera
+firstFrame = None
+area = 500
+
+# Initialize and read camera
+cam = cv2.VideoCapture(0)  # Assuming the primary camera, change if needed
+time.sleep(1)
+
+while True:
+    _, img = cam.read()
+    text = 'Normal'
+
+    # Resize image
+    img = imutils.resize(img, width=500)
+
+    # Convert to grayscale
+    grayImg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    # Apply Gaussian blur
+    gaussianImg = cv2.GaussianBlur(grayImg, (21, 21), 0)
+
+    # Initialize the first frame
+    if firstFrame is None:
+        firstFrame = gaussianImg
+        continue
+
+    # Comparing the first frame and the current frame
+    imgDiff = cv2.absdiff(firstFrame, gaussianImg)
+
+    # Threshold image
+    _, threshImg = cv2.threshold(imgDiff, 25, 255, cv2.THRESH_BINARY)
+
+    # Dilate image
+    dilateImg = cv2.dilate(threshImg, None, iterations=2)
+
+    # Contour to find neighborhood pixels (how much area is different)
+    cnts = cv2.findContours(dilateImg.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    cnts = imutils.grab_contours(cnts)
+
+    # Loop to draw bounding rectangle around the defined area
+    for c in cnts:
+        if cv2.contourArea(c) < area:
+            continue
+        (x, y, width, height) = cv2.boundingRect(c)
+        cv2.rectangle(img, (x, y), (x + width, y + height), (0, 255, 0), 2)
+        text = 'Moving object detected'
+        print(text)
+
+    # Text to output in the camera feed
+    cv2.putText(img, text, (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+
+    # Show camera feeds
+    cv2.imshow('Camera Feed', img)
+    cv2.imshow('Threshold Feed', threshImg)
+    cv2.imshow('Image Difference Feed', imgDiff)
+
+    # Update the first frame every few seconds to adapt to changes in lighting
+    if int(time.time()) % 10 == 0:
+        firstFrame = gaussianImg
+
+    # If 'q' is pressed, the window will close
+    key = cv2.waitKey(1) & 0xFF
+    if key == ord('q'):
+        break
+
+# Release camera object
+cam.release()
+cv2.destroyAllWindows()
