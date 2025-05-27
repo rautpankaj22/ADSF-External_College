@@ -1,0 +1,5 @@
+Product: Laptop, Stock: 50
+Product: Phone, Stock: 30
+Product: Tablet, Stock: 40
+Product: Monitor, Stock: 20
+Product: Keyboard, Stock: 100

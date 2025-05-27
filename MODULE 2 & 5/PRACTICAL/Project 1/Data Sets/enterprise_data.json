@@ -1,0 +1,26 @@
+[
+    {
+        "Employee_ID": 201,
+        "Name": "John Doe",
+        "Department": "IT",
+        "Salary": 70000
+    },
+    {
+        "Employee_ID": 202,
+        "Name": "Jane Smith",
+        "Department": "HR",
+        "Salary": 65000
+    },
+    {
+        "Employee_ID": 203,
+        "Name": "Mike Brown",
+        "Department": "Finance",
+        "Salary": 75000
+    },
+    {
+        "Employee_ID": 204,
+        "Name": "Emily Davis",
+        "Department": "Marketing",
+        "Salary": 60000
+    }
+]

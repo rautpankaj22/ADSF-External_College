@@ -1,0 +1,55 @@
+import pandas as pd
+import json
+import csv
+import os
+
+# 1. Capturing Consumer Data from a CSV File
+consumer_data = pd.DataFrame({
+    "Customer_ID": [101, 102, 103, 104, 105],
+    "Name": ["Alice", "Bob", "Charlie", "David", "Eve"],
+    "Purchase_Amount": [250.5, 400.0, 320.7, 150.8, 600.3],
+    "Location": ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix"]
+})
+consumer_csv_file = "consumer_data.csv"
+consumer_data.to_csv(consumer_csv_file, index=False)
+loaded_consumer_data = pd.read_csv(consumer_csv_file)
+print("Consumer Data from CSV:\n", loaded_consumer_data)
+
+# 2. Capturing Enterprise Data from a JSON File
+enterprise_data = [
+    {"Employee_ID": 201, "Name": "John Doe", "Department": "IT", "Salary": 70000},
+    {"Employee_ID": 202, "Name": "Jane Smith", "Department": "HR", "Salary": 65000},
+    {"Employee_ID": 203, "Name": "Mike Brown", "Department": "Finance", "Salary": 75000},
+    {"Employee_ID": 204, "Name": "Emily Davis", "Department": "Marketing", "Salary": 60000}
+]
+enterprise_json_file = "enterprise_data.json"
+with open(enterprise_json_file, "w") as json_file:
+    json.dump(enterprise_data, json_file, indent=4)
+
+with open(enterprise_json_file, "r") as json_file:
+    loaded_enterprise_data = json.load(json_file)
+    enterprise_df = pd.DataFrame(loaded_enterprise_data)
+    print("\nEnterprise Data from JSON:\n", enterprise_df)
+
+# 3. Capturing Sales Data from an Excel File
+sales_data = pd.DataFrame({
+    "Sale_ID": [301, 302, 303, 304, 305],
+    "Product": ["Laptop", "Phone", "Tablet", "Monitor", "Keyboard"],
+    "Price": [1000, 500, 300, 200, 50],
+    "Quantity": [2, 5, 3, 7, 10]
+})
+sales_excel_file = "sales_data.xlsx"
+sales_data.to_excel(sales_excel_file, index=False, engine='openpyxl')
+loaded_sales_data = pd.read_excel(sales_excel_file, engine='openpyxl')
+print("\nSales Data from Excel:\n", loaded_sales_data)
+
+# 4. Capturing Inventory Data from a TXT File
+inventory_txt_file = "inventory_data.txt"
+inventory_data = "Product: Laptop, Stock: 50\nProduct: Phone, Stock: 30\nProduct: Tablet, Stock: 40\nProduct: Monitor, Stock: 20\nProduct: Keyboard, Stock: 100"
+
+with open(inventory_txt_file, "w") as txt_file:
+    txt_file.write(inventory_data)
+
+with open(inventory_txt_file, "r") as txt_file:
+    loaded_inventory_data = txt_file.readlines()
+    print("\nInventory Data from TXT:\n", "".join(loaded_inventory_data))

@@ -1,0 +1,80 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the dataset (Example: Training Delivery Data)
+data = {
+    'Trainer': ['Alice', 'Bob', 'Charlie', 'David', 'Eve'],
+    'Sessions_Conducted': [50, 40, 60, 45, 55],
+    'Avg_Rating': [4.5, 4.2, 4.8, 4.3, 4.7],
+    'Hours_Spent': [200, 180, 220, 190, 210],
+    'Completion_Rate': [90, 85, 95, 88, 92]
+}
+df = pd.DataFrame(data)
+
+# Display basic information about the dataset
+print("Dataset Overview:")
+print(df.info())
+print("\nFirst Few Rows:")
+print(df.head())
+
+# Summary statistics
+print("\nSummary Statistics:")
+print(df.describe())
+
+# Checking for missing values
+print("\nMissing Values:")
+print(df.isnull().sum())
+
+# Checking for duplicate values
+print("\nDuplicate Values:")
+print(df.duplicated().sum())
+
+# Data Visualization
+plt.figure(figsize=(12, 6))
+sns.barplot(x='Trainer', y='Sessions_Conducted', data=df, palette='viridis')
+plt.title('Sessions Conducted by Each Trainer')
+plt.xlabel('Trainer')
+plt.ylabel('Sessions Conducted')
+plt.show()
+
+# Pairplot for visualizing relationships
+sns.pairplot(df, hue='Trainer', diag_kind='kde')
+plt.show()
+
+# Boxplot to check for outliers
+plt.figure(figsize=(10, 6))
+sns.boxplot(data=df.drop(columns=['Trainer']), palette='Set2')
+plt.title('Boxplot for Outlier Detection')
+plt.show()
+
+# Scatter plot for Ratings vs. Completion Rate
+plt.figure(figsize=(8, 5))
+sns.scatterplot(x='Avg_Rating', y='Completion_Rate', data=df,  hue='Trainer',s=100)
+plt.title('Average Rating vs Completion Rate')
+plt.xlabel('Average Rating')
+plt.ylabel('Completion Rate (%)')
+plt.show()
+
+# Correlation heatmap
+plt.figure(figsize=(8, 5))
+sns.heatmap(df.drop(columns=['Trainer']).corr(),annot=True,  cmap='coolwarm', fmt='.2f')
+plt.title('Correlation Heatmap')
+plt.show()
+
+# Distribution plots for numerical columns
+num_cols = df.select_dtypes(include=['number']).columns
+for col in num_cols:
+    plt.figure(figsize=(8, 4))
+    sns.histplot(df[col], kde=True, bins=10, color='blue')
+    plt.title(f'Distribution of {col}')
+    plt.xlabel(col)
+    plt.ylabel('Frequency')
+    plt.show()
+
+# Violin plots for distribution understanding
+plt.figure(figsize=(10, 6))
+sns.violinplot(data=df.drop(columns=['Trainer']))
+plt.title('Violin Plot for Numerical Features')
+plt.show()
