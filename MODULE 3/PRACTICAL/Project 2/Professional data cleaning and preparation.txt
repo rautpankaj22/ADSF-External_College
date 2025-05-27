@@ -1,0 +1,57 @@
+import pandas as pd
+import numpy as np
+
+# Load Sample Unprocessed Data
+data = {
+    "id": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    "name": ["Alice", "Bob", "Charlie", "David", "Eve", None, "Grace", "Hannah", "Isaac", "Jack"],
+    "age": [25, "Thirty", 35, None, 45, 29, 40, None, 50, -5],
+    "salary": [50000, 60000, 75000, 80000, -1000, 90000, "NaN", 40000, None, 70000],
+    "department": ["HR", "IT", "Finance", "IT", "HR", "Marketing", "Finance", "IT", "HR", "Unknown"]
+}
+df = pd.DataFrame(data)
+
+# Display Initial Data
+print("Initial Data:")
+print(df)
+
+# Handle Missing Values
+# Fill missing 'name' values with 'Unknown'
+df["name"].fillna("Unknown", inplace=True)
+
+# Convert Incorrect Data Types
+# Function to convert age to valid integer and handle errors
+def convert_age(value):
+    try:
+        return int(value) if int(value) > 0 else np.nan
+    except:
+        return np.nan
+                
+# Apply the conversion function from Text to number for the col name"age"
+df["age"] = df["age"].apply(convert_age)
+
+
+# Fill missing values with the median age
+df["age"].fillna(df["age"].median(), inplace=True)
+
+
+# Convert 'salary' to numeric
+df["salary"] = pd.to_numeric(df["salary"], errors="coerce")
+
+# Fill missing 'salary' values with the median salary
+df["salary"].fillna(df["salary"].median(), inplace=True)
+
+# Remove Negative Values
+# Drop rows where age or salary is negative
+df = df[(df["age"] > 0) & (df["salary"] > 0)]
+
+# Replace 'Unknown' in 'department' with NaN
+df["department"] = df["department"].replace({"Unknown": np.nan})
+
+
+# Fill missing 'department' with the most frequent value (mode)
+df["department"].fillna(df["department"].mode()[0], inplace=True)
+
+# Display Cleaned Data
+print("\nCleaned Data:")
+print(df)
