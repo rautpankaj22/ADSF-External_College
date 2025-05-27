@@ -1,0 +1,82 @@
+from nltk.chat.util import Chat, reflections
+
+# Create the chatbot list of recognizable patterns and its response to those patterns.
+# To do this, we will create a variable called 'pairs'
+
+# Pairs is a list of patterns and responses
+pairs = [
+    [
+        r"my name is (.*)",
+        ["Hello %1, how are you today?",]
+    ],
+    [
+        r"(.*)help(.*)",
+        ["I can help you. How can I assist you?",]
+    ],
+    [
+        r"what is your name ?",
+        ["My name is thecleverprogrammer, but you can call me Robot. I'm a chatbot.",]
+    ],
+    [
+        r"how are you (.*) ?",
+        ["I'm doing very well.", "I am great!"]
+    ],
+    [
+        r"sorry (.*)",
+        ["It's alright.", "It's OK, never mind that."]
+    ],
+    [
+        r"i'm (.*) (good|well|okay|ok)",
+        ["Nice to hear that.", "Alright, great!"]
+    ],
+    [
+        r"(hi|hey|hello|hola|holla)(.*)",
+        ["Hello!", "Hey there!"]
+    ],
+    [
+        r"what do you want ?",
+        ["Make me an offer I can't refuse.",]
+    ],
+    [
+        r"(.*)created(.*)",
+        ["Nandini Ravi created me using Python's NLTK library.", "Nandini :)"]
+    ],
+    [
+        r"(.*) (location|city) ?",
+        ["I am located in Maharashtra, India.",]
+    ],
+    [
+        r"is it raining in (.*)",
+        ["No rain in the past 4 days here in %1.", "In %1, there is a 50% chance of rain.",]
+    ],
+    [
+        r"how is your health (.*)",
+        ["Health is very important, but I am a computer, so I don't need to worry about my health.",]
+    ],
+    [
+        r"(.*)(sports|game|sport)(.*)",
+        ["I'm a very big fan of Cricket.",]
+    ],
+    [
+        r"who is your favorite (Cricketer|Batsman)?",
+        ["Virat Kohli is my favorite.",]
+    ],
+    [
+        r"quit",
+        ["Bye for now. See you soon! :)", "It was nice talking to you. See you soon! :)"]
+    ],
+    [
+        r"(.*)",
+        ["Our customer service will reach out to you. Please leave your number and write your query to us."]
+    ],
+]
+
+# Default message at the start of chat
+print("Hi, I'm thecleverprogrammer and I like to chat!")
+print("Please type in lowercase English to start a conversation. Type 'quit' to leave.")
+
+# Create Chat Bot
+chat = Chat(pairs, reflections)
+
+# Start conversation
+chat.converse()

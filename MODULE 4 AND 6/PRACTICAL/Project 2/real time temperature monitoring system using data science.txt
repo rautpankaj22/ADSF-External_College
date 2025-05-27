@@ -1,0 +1,17 @@
+import time
+import random
+
+# Simulate real-time temperature data
+locations = ['Mumbai', 'Pune', 'Hyderabad', 'Bangalore', 'Delhi']
+
+print("Streaming temperature data...")
+
+while True:
+    data = {
+        'location': random.choice(locations),
+        'temperature': round(random.uniform(20, 40), 2)
+    }
+    print(f"Data: {data}")
+    with open('temperature_data.txt', 'a') as file:
+        file.write(f"{data['location']},{data['temperature']}\n")
+    time.sleep(2)  # Generate data every 2 seconds

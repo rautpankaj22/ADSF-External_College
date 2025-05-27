@@ -1,0 +1,52 @@
+# Required Libraries
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns 
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+import joblib
+
+# Load Dataset
+df = pd.read_csv(r"C:\Users\milin\OneDrive\Desktop\student\student_info.csv")
+
+# Fill missing values with mean
+df2 = df.fillna(df.mean(numeric_only=True))
+
+# Feature and target selection
+X = df2[["study_hours"]] # Ensure X is 2D for model compatibility
+y = df2["student_marks"]
+
+# Split the data into training and test sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+# Create and train Linear Regression model
+lr = LinearRegression()
+lr.fit(X_train, y_train)
+
+# Save the model
+joblib.dump(lr, "Student_mark_prediction_model.pkl")
+
+# Load the trained model
+model = joblib.load("Student_mark_prediction_model.pkl")
+
+# Input: Ask user for study hours
+study_hours = float(input("Enter the number of study hours: "))
+
+# Check for valid input
+if study_hours > 0:
+    # Predict with reshaped input
+    predicted_value = model.predict(np.array([[study_hours]]))[0]
+    print(f"Predicted Marks for {study_hours} study hours: {predicted_value:.2f}")
+else:
+    print("Please enter a valid number of study hours greater than 0.")
+
+# Visualizing predictions
+plt.figure(figsize=(8, 5))
+plt.scatter(X_train, y_train, label="Training Data", color="blue", alpha=0.7)
+plt.plot(X_train, lr.predict(X_train), color="red", label="Regression Line")
+plt.xlabel("Study Hours")
+plt.ylabel("Student Marks")
+plt.title("Study Hours vs Student Marks")
+plt.legend()
+plt.show()
